@@ -1,0 +1,6 @@
+env: pytorch-1.4
+machine: gpu
+command: spacy download en && spacy download fr && python train.py -device cuda  # download spacy and train
+# input:
+#   - source: maezono/datasets/fields/1
+#     destination: saved

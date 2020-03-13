@@ -1,0 +1,3 @@
+- `python3 -m spacy download fr
+- `python3 -m spacy download en
+- gitignore, floydignoreをrefactor

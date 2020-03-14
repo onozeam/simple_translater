@@ -24,16 +24,20 @@ fn call_transater(txt: String) {
     let c = inline_python::Context::new();
     python! { #![context = &c]
         import sys
-        sys.path.append(".")
-        from ml.translate import translate
+        import os
+        sys.path.append(f"{os.getcwd()}/universal_transformer")
+        //sys.path.append(".")
+        //from universal_transformer.translate import translate
+        from translate import translate
         out = translate('txt)
+
     }
     let txt: String =  c.get_global("out").unwrap().unwrap();
     println!("{:?}", txt);
 }
 
 fn main() {
-    call_transater("strawberry".to_string());
+    call_transater("I have a good question.".to_string());
     return;
     let mut hbse = HandlebarsEngine::new();
     hbse.add(Box::new(DirectorySource::new("./templates/", ".hbs",)));

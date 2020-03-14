@@ -24,8 +24,9 @@ def create_field(max_seq_len, save_path):
     src_field: torchtext.data.field.Field = torchtext.data.Field(lower=True, tokenize=Tokenize(src_lang))
     tgt_field: torchtext.data.field.Field = torchtext.data.Field(lower=True, tokenize=Tokenize(tgt_lang), init_token='<sos>', eos_token='<eos>')
     # # create dataset
-    src_data = open("data/english.txt").read().strip().split('\n')
-    tgt_data = open("data/french.txt").read().strip().split('\n')
+    cwd = os.path.abspath(__file__).replace('/translate.py', '')
+    src_data = open(f"{cwd}/data/english.txt").read().strip().split('\n')
+    tgt_data = open(f"{cwd}/data/french.txt").read().strip().split('\n')
     df = pd.DataFrame({'src': src_data, 'tgt': tgt_data}, columns=["src", "tgt"])
     too_long_mask = (df['src'].str.count(' ') < max_seq_len) & (df['tgt'].str.count(' ') < max_seq_len)
     df = df.loc[too_long_mask]  # remove too long sentence
@@ -37,8 +38,8 @@ def create_field(max_seq_len, save_path):
     src_field.build_vocab(dataset)
     tgt_field.build_vocab(dataset)
     print('saving fields...')
-    pickle.dump(src_field, open(f'{save_path}/src.pickle', 'wb'))
-    pickle.dump(tgt_field, open(f'{save_path}/tgt.pickle', 'wb'))
+    pickle.dump(src_field, open(f'{cwd}/{save_path}/src.pickle', 'wb'))
+    pickle.dump(tgt_field, open(f'{cwd}/{save_path}/tgt.pickle', 'wb'))
     return src_field, tgt_field
 
 
@@ -117,11 +118,13 @@ def first_beam_search(model, src, src_field, tgt_field, max_seq_len, beam_size):
 
 def translate(sentence, device='cpu', save_path='saved', embedding_dim=512, nhead=2, max_seq_len=80, max_pondering_time=10, dropout=0.5, beam_size=3):
     # load field
-    if os.path.exists(f'{save_path}/src.pickle') and os.path.exists(f'{save_path}/tgt.pickle'):
+    cwd = os.path.abspath(__file__).replace('/translate.py', '')
+    print(f'{cwd}/{save_path}/src.pickle')
+    if os.path.exists(f'{cwd}/{save_path}/src.pickle') and os.path.exists(f'{cwd}/{save_path}/tgt.pickle'):
         print('loading saved fields...')
-        with open(f'{save_path}/src.pickle', 'rb') as s:
+        with open(f'{cwd}/{save_path}/src.pickle', 'rb') as s:
             src_field = pickle.load(s)
-        with open(f'{save_path}/tgt.pickle', 'rb') as t:
+        with open(f'{cwd}/{save_path}/tgt.pickle', 'rb') as t:
             tgt_field = pickle.load(t)
     else:
         print('creating fields...')
@@ -131,13 +134,12 @@ def translate(sentence, device='cpu', save_path='saved', embedding_dim=512, nhea
                                  embedding_dim=embedding_dim, nhead=nhead, max_seq_len=max_seq_len, max_pondering_time=max_pondering_time)
     print('loading weights...')
     if device == 'cpu':
-        model.load_state_dict(torch.load(f'{save_path}/model_state', map_location=torch.device('cpu')))
+        model.load_state_dict(torch.load(f'{cwd}/{save_path}/model_state', map_location=torch.device('cpu')))
     else:
         raise NotImplementedError('prediction on GPU is not implemented.')
     if device == 'cuda':
         model = model.cuda()
     # setence to torch variable
-    # sentence = 'they could not speak English.'
     sentence = src_field.preprocess(sentence)
     indexed = [src_field.vocab.stoi[word] for word in sentence]
     src = torch.autograd.Variable(torch.LongTensor([indexed]))

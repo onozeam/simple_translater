@@ -76,6 +76,7 @@ class Tokenize:
 
 def _train(model, dataset_iter, optimizer, lr_scheduler, cl_args, src_field, tgt_field, iteration_num):
     print('start trainning...')
+    cwd = os.path.abspath(__file__).replace('/train.py', '')
     model.train()
     tgt_pad_idx = tgt_field.vocab.stoi['<pad>']
     total_loss = 0
@@ -105,7 +106,7 @@ def _train(model, dataset_iter, optimizer, lr_scheduler, cl_args, src_field, tgt
                 total_loss = 0
                 if iter_ % 300 == 0:
                     print('saving weights...')
-                    torch.save(model.state_dict(), f'{cl_args.save_path}/model_state')
+                    torch.save(model.state_dict(), f'{cwd}/{cl_args.save_path}/model_state')
                     print('done.')
     print('end trainning.')
 
@@ -132,22 +133,26 @@ def main():
     tgt_lang = 'fr'
     # create train iterator (create field, dataset, iterator)
     # # create field
+    cwd = os.path.abspath(__file__).replace('/train.py', '')
     if args.use_saved_fields:
         if args.device == 'cpu':
             print('loading saved fields...')
-            with open(f'{args.save_path}/src.pickle', 'rb') as s:
+            with open(f'{cwd}/{args.save_path}/src.pickle', 'rb') as s:
                 src_field = pickle.load(s)
-            with open(f'{args.save_path}/tgt.pickle', 'rb') as t:
+            with open(f'{cwd}/{args.save_path}/tgt.pickle', 'rb') as t:
                 tgt_field = pickle.load(t)
+            print('end.')
         else:
             exit('use_saved_fields option can be used on only cpu.')
     else:
         print('creating fields...')
         src_field: torchtext.data.field.Field = torchtext.data.Field(lower=True, tokenize=Tokenize(src_lang))
         tgt_field: torchtext.data.field.Field = torchtext.data.Field(lower=True, tokenize=Tokenize(tgt_lang), init_token='<sos>', eos_token='<eos>')
+        print('end.')
     # # create dataset
-    src_data = open("data/english.txt").read().strip().split('\n')
-    tgt_data = open("data/french.txt").read().strip().split('\n')
+    print('creating dataset iterator...')
+    src_data = open(f"{cwd}/data/english.txt").read().strip().split('\n')
+    tgt_data = open(f"{cwd}/data/french.txt").read().strip().split('\n')
     df = pd.DataFrame({'src': src_data, 'tgt': tgt_data}, columns=["src", "tgt"])
     too_long_mask = (df['src'].str.count(' ') < args.max_seq_len) & (df['tgt'].str.count(' ') < args.max_seq_len)
     df = df.loc[too_long_mask]  # remove too long sentence
@@ -161,10 +166,12 @@ def main():
     # build vocab, save field object and add variable.
     src_field.build_vocab(dataset)
     tgt_field.build_vocab(dataset)
+    print('end.')
     if not args.use_saved_fields:
         print('saving fields...')
-        pickle.dump(src_field, open(f'{args.save_path}/src.pickle', 'wb'))
-        pickle.dump(tgt_field, open(f'{args.save_path}/tgt.pickle', 'wb'))
+        pickle.dump(src_field, open(f'{cwd}/{args.save_path}/src.pickle', 'wb'))
+        pickle.dump(tgt_field, open(f'{cwd}/{args.save_path}/tgt.pickle', 'wb'))
+        print('end.')
     iteration_num = [i for i, _ in enumerate(dataset_iter)][-1]
     # initialize model
     model = UniversalTransformer(n_src_vocab=len(src_field.vocab), n_tgt_vocab=len(tgt_field.vocab),
@@ -172,7 +179,8 @@ def main():
     # initialize param
     if args.use_saved_weights:
         print('loading saved model states...')
-        model.load_state_dict(torch.load(f'{args.save_path}/model_state'))
+        model.load_state_dict(torch.load(f'{cwd}/{args.save_path}/model_state'))
+        print('end.')
     else:
         for param in model.parameters():
             if param.dim() > 1:
@@ -184,7 +192,8 @@ def main():
     lr_scheduler = CosineAnnealingLR(optimizer, iteration_num)
     _train(model, dataset_iter, optimizer, lr_scheduler, args, src_field, tgt_field, iteration_num)
     print('saving weights...')
-    torch.save(model.state_dict(), f'{args.save_path}/model_state')
+    torch.save(model.state_dict(), f'{cwd}/{args.save_path}/model_state')
+    print('end.')
 
 
 if __name__ == '__main__':

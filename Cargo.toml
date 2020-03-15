@@ -17,3 +17,8 @@ serde_json = "1.0"
 serde_derive = "^1.0.0"
 pyo3 = "0.8"
 inline-python="0.4.0"
+lazy_static = "1.4.0"
+
+[features]
+## create a feature in your app
+watch = ["handlebars-iron/watch"]

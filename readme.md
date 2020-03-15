@@ -10,29 +10,30 @@ We can use this library as not only CLI but also a web application which is impl
 
 ## Usage
 ### Trainning model or downloading optimized model state.
-you can use floydhub for trainnig. this training will finished with in 1 hour.
+You can use floydhub for trainnig. this training will finished with in 1 hour.
 ```
 $ pwd
 .../simple_translater/universal_transformer/
 $ floyd run
 ```
 
-if you don't want to train a model now, you can download `model_state` which was already trained, from my floydhub repository.
-model_state should be put at `.../simple_translater/universal_transformer/saved/model_state`
+If you don't want to train a model now, you can download `model_state` file which was already trained, from [my floydhub repository](https://www.floydhub.com/maezono/projects/universal_transformer/1/files/saved/model_state).   
+`model_state` file should be put at `.../simple_translater/universal_transformer/saved/model_state`
 
 ### Prediction on CLI
-if you haven't use french and english on spacy, you need downdloading these data.
+If you haven't use french and english on spacy, you need downdloading these data.
 ```
 $ python3 -m spacy download fr
 $ python3 -m spacy download en
 ```
-translate any target sentence, for example "we can use a computer."
+Translate any target sentence, for example "we can use a computer."
 ```
 $ python3 translate.py -sentence "we can use a computer."
+nous pouvons utiliser un ordinateur.
 ```
 
 ### Running a web appilication
-start up a web application,
+Start up a web application,
 ```
 $ pwd
 .../simple_translater
@@ -42,5 +43,5 @@ and access to [http://localhost:3000/](http://localhost:3000/)
 
 
 # Versions
-Python: 
-Rust: 
+- Python: 3.7.6
+- rustc: 1.38.0-nightly (To use [pyo3](https://github.com/PyO3/pyo3), we need nightly rust.

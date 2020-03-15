@@ -14,6 +14,4 @@ var
 .DS_Store
 saved/*.pickle
 saved/model_state
-fr_saved/*
-fr_data/*
 *.tgz

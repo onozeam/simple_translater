@@ -2,3 +2,4 @@
 **/*.rs.bk
 **.pyc
 universal_transformer/saved/*
+todo.md

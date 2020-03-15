@@ -20,25 +20,26 @@ pub struct Team {
     pts: u16,
 }
 
-fn call_transater(txt: String) {
+fn call_transater(txt: String) -> String {
     let c = inline_python::Context::new();
     python! { #![context = &c]
         import sys
         import os
         sys.path.append(f"{os.getcwd()}/universal_transformer")
-        //sys.path.append(".")
-        //from universal_transformer.translate import translate
         from translate import translate
         out = translate('txt)
 
     }
     let txt: String =  c.get_global("out").unwrap().unwrap();
-    println!("{:?}", txt);
+    txt
 }
 
 fn main() {
-    call_transater("I have a good question.".to_string());
-    return;
+    // todo:
+    // - template
+    // - get form
+    //call_transater("I have a good question.".to_string());
+    //return;
     let mut hbse = HandlebarsEngine::new();
     hbse.add(Box::new(DirectorySource::new("./templates/", ".hbs",)));
     if let Err(r) = hbse.reload() {
@@ -53,13 +54,12 @@ fn main() {
     Iron::new(chain).http("localhost:3000").unwrap();
 
     fn index(req: &mut Request) -> IronResult<Response> {
-        // # TODO
-        // - python codeを読み込む. (学習済みモデルで予測する)
         let mut resp = Response::new();
         let mut data = Map::new();
         let params = req.get_ref::<Params>().unwrap();  // ?query=...を取得
         let query = match params.find(&["query"]) {
-            Some(&Value::String(ref query)) => query.clone().to_string(),
+            //Some(&Value::String(ref query)) => query.clone().to_string(),
+            Some(&Value::String(ref query)) => call_transater(query.clone().to_string()),
             _ => return Ok(Response::with((status::BadRequest, "No data.\n"))),
         };
         println!("{}", query);

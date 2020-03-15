@@ -1,6 +1,6 @@
 # Simple Translater
 A translater from English to Frensh using Pytorch.   
-We can use this library as not only CLI but also a web application which is implemeted in Rust.
+This library could be used as not only CLI but also a web application. A web application interface is implemeted in Rust.
 
 ## Model
 [Universal Transformers](https://arxiv.org/abs/1807.03819)
@@ -42,6 +42,6 @@ $ cargo run
 and access to [http://localhost:3000/](http://localhost:3000/)
 
 
-# Versions
+## Versions
 - Python: 3.7.6
-- rustc: 1.38.0-nightly (To use [pyo3](https://github.com/PyO3/pyo3), we need nightly rust.
+- rustc: 1.38.0-nightly (To use [pyo3](https://github.com/PyO3/pyo3), we need nightly rust.)

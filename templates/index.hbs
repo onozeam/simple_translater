@@ -1,13 +1,16 @@
-<form action="http://foo.com" method="get">
+<form action="" method="get">
   <div>
-    <label for="say">What greeting do you want to say?</label>
-    <input name="say" id="say" value="Hi">
+    <label for="query">Type a English sentence what you want to transltate to French.</label>
+    <input name="query" id="query" value="We can use a computer.">
   </div>
-  <div>
-    <label for="to">Who do you want to say it to?</label>
-    <input name="to" id="to" value="Mom">
+    <button>Translate from En to Fr</button>
   </div>
-  <div>
-    <button>Send my greetings</button>
-  </div>
+  {{ #if query }}
+    <p> query: </p>
+    <p> {{ query }} </p>
+  {{ /if }}
+  {{ #if result }}
+    <p> result: </p>
+    <p> {{ result }} </p>
+  {{ /if }}
 </form>

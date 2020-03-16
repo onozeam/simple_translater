@@ -32,7 +32,7 @@ $ python3 translate.py -sentence "we can use a computer."
 nous pouvons utiliser un ordinateur.
 ```
 
-### Running a web appilication
+### Prediction on a web appilication
 Start up a web application,
 ```
 $ pwd

@@ -46,4 +46,4 @@ and access to [http://localhost:3000/](http://localhost:3000/)
 
 ## Versions
 - Python: 3.7.6
-- - rustc: 1.38.0-nightly (To use [pyo3](https://github.com/PyO3/pyo3), we need nightly rust.)
+- rustc: 1.38.0-nightly (To use [pyo3](https://github.com/PyO3/pyo3), we need nightly rust.)

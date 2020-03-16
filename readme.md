@@ -14,11 +14,13 @@ You can use floydhub for trainnig. this training will finished with in 1 hour.
 ```
 $ pwd
 .../simple_translater/universal_transformer
+$ floyd init [any project name]
+...
 $ floyd run
 ```
+After you finished trainning, you can download `model_state` file from "https://www.floydhub.com/[your_name]/projects/[project_name]/1/files/saved/model_state", and must put on `.../simple_translater/universal_transformer/saved/.` on your local computer.
 
-If you don't want to train a model now, you can download `model_state` file which was already trained, from [my floydhub repository](https://www.floydhub.com/maezono/projects/universal_transformer/1/files/saved/model_state).   
-`model_state` file should be put at `.../simple_translater/universal_transformer/saved/model_state`
+If you don't want to train a model now, you can download `model_state` file which was already trained, from [my floydhub repository](https://www.floydhub.com/maezono/projects/universal_transformer/1/files/saved/model_state). And please put that file on `.../simple_translater/universal_transformer/saved/.` your computer.
 
 ### Prediction on CLI
 If you haven't use french and english on spacy, you need downdloading these data.
@@ -44,4 +46,4 @@ and access to [http://localhost:3000/](http://localhost:3000/)
 
 ## Versions
 - Python: 3.7.6
-- rustc: 1.38.0-nightly (To use [pyo3](https://github.com/PyO3/pyo3), we need nightly rust.)
+- - rustc: 1.38.0-nightly (To use [pyo3](https://github.com/PyO3/pyo3), we need nightly rust.)

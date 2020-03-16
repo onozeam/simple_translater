@@ -20,10 +20,10 @@ $ floyd run
 ```
 After you finished trainning, you can download `model_state` file from "https://www.floydhub.com/[your_name]/projects/[project_name]/1/files/saved/model_state", and must put on `.../simple_translater/universal_transformer/saved/.` on your local computer.
 
-If you don't want to train a model now, you can download `model_state` file which was already trained, from [my floydhub repository](https://www.floydhub.com/maezono/projects/universal_transformer/1/files/saved/model_state). And please put that file on `.../simple_translater/universal_transformer/saved/.` your computer.
+If you don't want to train a model now, you can download `model_state` file which was already trained, from [my floydhub repository](https://www.floydhub.com/maezono/projects/universal_transformer/1/files/saved/model_state). And please put that file on `.../simple_translater/universal_transformer/saved/.` on your computer.
 
 ### Prediction on CLI
-If you haven't use french and english on spacy, you need downdloading these data.
+If you haven't used french and english on spacy, you need downdloading these data.
 ```
 $ python3 -m spacy download fr
 $ python3 -m spacy download en

@@ -97,7 +97,7 @@ class AdaptiveComputationTime(nn.Module):
             - n_updates: shape is (S, N)
             - remainders: shape is (S, N)
 
-            where S is the sequence length, N is the batch size, E is the embedding size.
+        where S is the sequence length, N is the batch size, E is the embedding size.
         """
         p = self.sigmoid(self.pondering(state)).squeeze(-1)  # 今回のhalting_probability
         new_halted_mask = (self.halting_probability + p*self.still_running_mask > self.threshold).float() * self.still_running_mask  # 今回の更新で thresholdを超える場合は1, それ以外は0になる. (今回の更新の前からthresholdを超えていた場合は0)  # noqa: E501

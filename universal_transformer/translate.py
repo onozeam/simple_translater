@@ -116,39 +116,6 @@ def first_beam_search(model, src, src_field, tgt_field, max_seq_len, beam_size):
     return outputs.T, memories.transpose(0, 1), stacked_score
 
 
-def _translate(sentence, device='cpu', save_path='saved', embedding_dim=512, nhead=2, max_seq_len=80, max_pondering_time=10, dropout=0.5, beam_size=3):
-    # load field
-    cwd = os.path.abspath(__file__).replace('/translate.py', '')
-    print(f'{cwd}/{save_path}/src.pickle')
-    if os.path.exists(f'{cwd}/{save_path}/src.pickle') and os.path.exists(f'{cwd}/{save_path}/tgt.pickle'):
-        print('loading saved fields...')
-        with open(f'{cwd}/{save_path}/src.pickle', 'rb') as s:
-            src_field = pickle.load(s)
-        with open(f'{cwd}/{save_path}/tgt.pickle', 'rb') as t:
-            tgt_field = pickle.load(t)
-    else:
-        print('creating fields...')
-        src_field, tgt_field = create_field(max_seq_len, save_path)
-    # load model
-    model = UniversalTransformer(n_src_vocab=len(src_field.vocab), n_tgt_vocab=len(tgt_field.vocab),
-                                 embedding_dim=embedding_dim, nhead=nhead, max_seq_len=max_seq_len, max_pondering_time=max_pondering_time)
-    print('loading weights...')
-    if device == 'cpu':
-        model.load_state_dict(torch.load(f'{cwd}/{save_path}/model_state', map_location=torch.device('cpu')))
-    else:
-        raise NotImplementedError('prediction on GPU is not implemented.')
-    if device == 'cuda':
-        model = model.cuda()
-    # setence to torch variable
-    sentence = src_field.preprocess(sentence)
-    indexed = [src_field.vocab.stoi[word] for word in sentence]
-    src = torch.autograd.Variable(torch.LongTensor([indexed]))
-
-    model.eval()
-    result = beam_search(model, src, src_field, tgt_field, max_seq_len, beam_size)
-    return result
-
-
 def load_model_and_field(device='cpu', save_path='saved', embedding_dim=512, nhead=2, max_seq_len=80, max_pondering_time=10, dropout=0.5):
     # load field
     cwd = os.path.abspath(__file__).replace('/translate.py', '')

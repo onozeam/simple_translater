@@ -1,16 +1,14 @@
 <form action="" method="get">
   <div>
-    <label for="query">Type a English sentence what you want to transltate to French.</label>
-    <input name="query" id="query" value="We can use a computer.">
-  </div>
+    <label for="query">Please Enter an English sentence what you want to transltate to French.</label>
+    <br>
+    <input name="query" id="query" value="{{ #if query }}{{ query }}{{ else }}We can use a computer.{{ /if }}">
     <button>Translate from En to Fr</button>
   </div>
   {{ #if query }}
-    <p> query: </p>
-    <p> {{ query }} </p>
+    <p> English: "{{ query }}"</p>
   {{ /if }}
   {{ #if result }}
-    <p> result: </p>
-    <p> {{ result }} </p>
+    <p> French: "{{ result }}"</p>
   {{ /if }}
 </form>

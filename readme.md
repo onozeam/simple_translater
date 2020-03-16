@@ -37,7 +37,7 @@ Start up a web application,
 ```
 $ pwd
 .../simple_translater
-$ cargo run
+$ cargo run --features watch
 ```
 and access to [http://localhost:3000/](http://localhost:3000/)
 

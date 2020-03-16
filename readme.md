@@ -13,7 +13,7 @@ This library could be used as not only CLI but also a web application. A web app
 You can use floydhub for trainnig. this training will finished with in 1 hour.
 ```
 $ pwd
-.../simple_translater/universal_transformer/
+.../simple_translater/universal_transformer
 $ floyd run
 ```
 
